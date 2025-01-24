@@ -24,19 +24,27 @@ export default function Main() {
   const updatePlayerStats = (bet: Bet) => {
     setPlayers((prevPlayers) => {
       const updatedPlayers = [...prevPlayers];
-      const winnerIndex = updatedPlayers.findIndex(
+
+      // findIndex の戻り値を取得
+      const winnerIndex: number = updatedPlayers.findIndex(
         (p) => p.name === bet.winner
       );
-      const loserIndex = updatedPlayers.findIndex((p) => p.name === bet.loser);
+      const loserIndex: number = updatedPlayers.findIndex(
+        (p) => p.name === bet.loser
+      );
 
+      const betAmount = bet.amount;
+
+      // 勝者のデータを更新
       if (winnerIndex !== -1) {
         updatedPlayers[winnerIndex].wins += 1;
-        updatedPlayers[winnerIndex].totalWon += bet.amount;
+        updatedPlayers[winnerIndex].totalWon += betAmount;
       }
 
+      // 敗者のデータを更新
       if (loserIndex !== -1) {
         updatedPlayers[loserIndex].losses += 1;
-        updatedPlayers[loserIndex].totalLost += bet.amount;
+        updatedPlayers[loserIndex].totalLost += betAmount;
       }
 
       return updatedPlayers;
@@ -50,16 +58,14 @@ export default function Main() {
 
   const addPlayer = (playerName: string) => {
     if (playerName && !players.some((p) => p.name === playerName)) {
-      setPlayers((prev) => [
-        ...prev,
-        {
-          name: playerName,
-          wins: 0,
-          losses: 0,
-          totalWon: 0,
-          totalLost: 0,
-        },
-      ]);
+      const newPlayer: Battle = {
+        name: playerName,
+        wins: 0,
+        losses: 0,
+        totalWon: 0,
+        totalLost: 0,
+      };
+      setPlayers((prev) => [...prev, newPlayer]);
     }
   };
 

@@ -17,20 +17,18 @@ export default function PlayerStatistics({ players }: PlayerStatisticsProps) {
   return (
     <Card className="bg-white/80 backdrop-blur-sm shadow-lg">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold">
-          Player Statistics
-        </CardTitle>
+        <CardTitle className="text-xl font-semibold">記録</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Player</TableHead>
-              <TableHead>Wins</TableHead>
-              <TableHead>Losses</TableHead>
-              <TableHead>Total Won</TableHead>
-              <TableHead>Total Lost</TableHead>
-              <TableHead>Net Profit</TableHead>
+              <TableHead>プレイヤー</TableHead>
+              <TableHead>勝ち数</TableHead>
+              <TableHead>負け数</TableHead>
+              <TableHead>勝ち金</TableHead>
+              <TableHead>負け金</TableHead>
+              <TableHead>トータル</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -39,8 +37,8 @@ export default function PlayerStatistics({ players }: PlayerStatisticsProps) {
                 <TableCell className="font-medium">{player.name}</TableCell>
                 <TableCell>{player.wins}</TableCell>
                 <TableCell>{player.losses}</TableCell>
-                <TableCell>${player.totalWon.toFixed(2)}</TableCell>
-                <TableCell>${player.totalLost.toFixed(2)}</TableCell>
+                <TableCell>{player.totalWon}円</TableCell>
+                <TableCell>{player.totalLost}円</TableCell>
                 <TableCell
                   className={
                     player.totalWon - player.totalLost > 0
@@ -48,7 +46,7 @@ export default function PlayerStatistics({ players }: PlayerStatisticsProps) {
                       : "text-red-600"
                   }
                 >
-                  ${(player.totalWon - player.totalLost).toFixed(2)}
+                  {player.totalWon - player.totalLost}円
                 </TableCell>
               </TableRow>
             ))}

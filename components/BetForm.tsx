@@ -33,45 +33,56 @@ export default function BetForm({
   const [newPlayerName, setNewPlayerName] = useState("");
 
   const handleInputChange = (name: string, value: string) => {
-    setNewBet((prev) => ({ ...prev, [name]: value }));
+    if (name === "amount") {
+      // 数字のみ許可
+      if (/^\d*$/.test(value)) {
+        setNewBet((prev) => ({ ...prev, [name]: value }));
+      }
+    } else {
+      setNewBet((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     const bet = {
       id: Date.now(),
       datetime: new Date().toLocaleString(),
       winner: newBet.winner,
       loser: newBet.loser,
-      amount: Number.parseFloat(newBet.amount),
+      amount: Number(newBet.amount), // `amount` を数値型に変換
     };
+
     onAddBet(bet);
     setNewBet({ winner: "", loser: "", amount: "" });
   };
 
   const addNewPlayer = () => {
-    onAddPlayer(newPlayerName);
-    setNewPlayerName("");
+    if (newPlayerName.trim() !== "") {
+      onAddPlayer(newPlayerName.trim());
+      setNewPlayerName("");
+    }
   };
 
   return (
     <Card className="bg-white/80 backdrop-blur-sm shadow-lg">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">
-          Enhanced Betting Tracker
+          賭け管理
         </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <Label htmlFor="winner">Winner</Label>
+              <Label htmlFor="winner">勝ち</Label>
               <Select
                 onValueChange={(value) => handleInputChange("winner", value)}
                 value={newBet.winner}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select winner" />
+                  <SelectValue placeholder="" />
                 </SelectTrigger>
                 <SelectContent>
                   {players.map((player) => (
@@ -83,13 +94,13 @@ export default function BetForm({
               </Select>
             </div>
             <div>
-              <Label htmlFor="loser">Loser</Label>
+              <Label htmlFor="loser">負け</Label>
               <Select
                 onValueChange={(value) => handleInputChange("loser", value)}
                 value={newBet.loser}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select loser" />
+                  <SelectValue placeholder="" />
                 </SelectTrigger>
                 <SelectContent>
                   {players.map((player) => (
@@ -101,14 +112,14 @@ export default function BetForm({
               </Select>
             </div>
             <div>
-              <Label htmlFor="amount">Amount</Label>
+              <Label htmlFor="amount">金額</Label>
               <Input
                 id="amount"
                 name="amount"
-                type="number"
+                type="text"
                 value={newBet.amount}
                 onChange={(e) => handleInputChange("amount", e.target.value)}
-                placeholder="Bet amount"
+                placeholder="金額を入力"
                 required
               />
             </div>
@@ -118,25 +129,25 @@ export default function BetForm({
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
                   <PlusCircle className="mr-2 h-4 w-4" />
-                  Add New Player
+                  プレイヤーを追加
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Add New Player</DialogTitle>
+                  <DialogTitle>プレイヤーを追加</DialogTitle>
                 </DialogHeader>
                 <div className="flex items-center space-x-2">
                   <Input
-                    placeholder="Enter player name"
+                    placeholder="名前"
                     value={newPlayerName}
                     onChange={(e) => setNewPlayerName(e.target.value)}
                   />
-                  <Button onClick={addNewPlayer}>Add</Button>
+                  <Button onClick={addNewPlayer}>追加</Button>
                 </div>
               </DialogContent>
             </Dialog>
             <Button type="submit" className="bg-green-500 hover:bg-green-600">
-              Record Bet
+              登録
             </Button>
           </div>
         </form>

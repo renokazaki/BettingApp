@@ -17,16 +17,16 @@ export default function BettingHistory({ bets }: BettingHistoryProps) {
   return (
     <Card className="bg-white/80 backdrop-blur-sm shadow-lg">
       <CardHeader>
-        <CardTitle className="text-xl font-semibold">Betting History</CardTitle>
+        <CardTitle className="text-xl font-semibold">履歴</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Date & Time</TableHead>
-              <TableHead>Winner</TableHead>
-              <TableHead>Loser</TableHead>
-              <TableHead>Amount</TableHead>
+              <TableHead>時間</TableHead>
+              <TableHead>勝ち</TableHead>
+              <TableHead>負け</TableHead>
+              <TableHead>金額</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -39,7 +39,7 @@ export default function BettingHistory({ bets }: BettingHistoryProps) {
                 <TableCell className="font-medium text-red-600">
                   {bet.loser}
                 </TableCell>
-                <TableCell>${bet.amount.toFixed(2)}</TableCell>
+                <TableCell>{bet.amount}</TableCell>
               </TableRow>
             ))}
           </TableBody>

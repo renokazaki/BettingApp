@@ -10,16 +10,28 @@ export default function Main() {
   const [bets, setBets] = useState<Bet[]>([]);
   const [players, setPlayers] = useState<Battle[]>([]);
 
+  // 初回ロード時にプレイヤーと履歴を localStorage から取得
   useEffect(() => {
     const storedPlayers = localStorage.getItem("players");
     if (storedPlayers) {
       setPlayers(JSON.parse(storedPlayers));
     }
+
+    const storedBets = localStorage.getItem("bets");
+    if (storedBets) {
+      setBets(JSON.parse(storedBets));
+    }
   }, []);
 
+  // players が更新されたときに localStorage に保存
   useEffect(() => {
     localStorage.setItem("players", JSON.stringify(players));
   }, [players]);
+
+  // bets が更新されたときに localStorage に保存
+  useEffect(() => {
+    localStorage.setItem("bets", JSON.stringify(bets));
+  }, [bets]);
 
   const updatePlayerStats = (bet: Bet) => {
     setPlayers((prevPlayers) => {
@@ -52,7 +64,7 @@ export default function Main() {
   };
 
   const addBet = (bet: Bet) => {
-    setBets((prev) => [bet, ...prev]);
+    setBets((prev) => [bet, ...prev]); // 新しいベットを履歴の先頭に追加
     updatePlayerStats(bet);
   };
 
